@@ -7,6 +7,7 @@ import SingleTransaction from './SingleTransaction';
 import { monthNames } from '../utils/data';
 import Barchart from './BarChart';
 import PieChart from './PieChart';
+import Budget from './Budget';
 
 const Transactions = ({ getExpenses, expenses, years, getYear }) => {
   const [showForm, setShowForm] = useState(false);
@@ -29,10 +30,7 @@ const Transactions = ({ getExpenses, expenses, years, getYear }) => {
       `http://localhost:5000/expenses/chart?year=${formValues.year}`
     );
     const data = await response.json();
-    console.log(data);
     setChartData(data);
-
-    console.log('chart', data);
   };
   const getPieData = async () => {
     const response = await fetch(
@@ -40,7 +38,6 @@ const Transactions = ({ getExpenses, expenses, years, getYear }) => {
     );
     const data = await response.json();
     setPieData(data);
-    console.log('pie', data);
   };
 
   useEffect(() => {
@@ -50,7 +47,6 @@ const Transactions = ({ getExpenses, expenses, years, getYear }) => {
 
   useEffect(() => {
     getPieData();
-    console.log(formValues.month);
   }, [formValues.month]);
 
   useEffect(() => {
@@ -63,6 +59,7 @@ const Transactions = ({ getExpenses, expenses, years, getYear }) => {
 
   return (
     <div className="w-1/2  flex flex-col mx-auto my-10 font-light">
+      <Budget years={years} chartData={chartData} />
       <div className="flex items-center my-2 gap-2 justify-between">
         <h2 className="text-2xl text-white font-normal">Transactions</h2>
         <button
@@ -112,20 +109,31 @@ const Transactions = ({ getExpenses, expenses, years, getYear }) => {
           getPieData={getPieData}
         />
       ) : null}
-      {expenses ? (
-        <div className=" h-80 overflow-y-scroll overflow-x-hidden mb-10">
-          {expenses.map((expense, i) => (
-            <SingleTransaction
-              index={i}
-              category={expense.expense_category}
-              amount={expense.expense_amount}
-              date={expense.expense_date}
-              year={formValues.year}
-              month={formValues.month}
-            />
-          ))}
+      {pieData.length > 0 ? (
+        <div>
+          {expenses ? (
+            <div className=" h-80 overflow-y-scroll overflow-x-hidden mb-10">
+              {expenses.map((expense, i) => (
+                <SingleTransaction
+                  index={i}
+                  category={expense.expense_category}
+                  amount={expense.expense_amount}
+                  date={expense.expense_date}
+                  year={formValues.year}
+                  month={formValues.month}
+                  pieData={pieData}
+                />
+              ))}
+            </div>
+          ) : null}
         </div>
-      ) : null}
+      ) : (
+        <div className=" h-80 overflow-y-scroll overflow-x-hidden mb-10">
+          <div className="w-full text-center bg-neonPurple p-2 text-white rounded-sm mx-auto my-2">
+            No expenses this month
+          </div>
+        </div>
+      )}
       <div className="w-full flex items-center justify-center">
         <h2 className="text-white text-2xl p-4">{formValues.year}</h2>
         {chartData ? <Barchart data={chartData} /> : null}

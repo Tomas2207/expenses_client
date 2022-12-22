@@ -1,12 +1,13 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const { monthNames } = require('../utils/data');
 
 const SingleTransaction = (props) => {
   let date = props.date;
-  useEffect(() => {
-    console.log(props.month, date[1]);
-  }, []);
+  if (props.pieData.length === 0) console.log('hmm');
+  console.log(props.pieData);
+  let called = false;
+
   date = date.split('-');
   if (props.year === date[0] && props.month == date[1] - 1)
     return (

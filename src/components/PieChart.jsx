@@ -6,7 +6,6 @@ import { useEffect } from 'react';
 import { monthNames } from '../utils/data';
 
 const PieChart = (pieData) => {
-  console.log(pieData.data);
   const [data, setData] = useState({ datasets: [] });
   useEffect(() => {
     if (pieData)

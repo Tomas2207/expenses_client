@@ -8,16 +8,10 @@ const App = () => {
   const [expenses, setExpenses] = useState();
   const [years, setYears] = useState();
 
-  useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
-
   const getExpenses = async () => {
     const response = await fetch(`http://localhost:5000/expenses`);
     const data = await response.json();
-    console.log(data);
     if (!data.message) setExpenses(data);
-    console.log('here');
   };
 
   const getYear = async () => {
@@ -30,10 +24,6 @@ const App = () => {
     getExpenses();
     getYear();
   }, []);
-
-  useEffect(() => {
-    console.log(expenses);
-  }, [expenses]);
 
   function ErrorFallback({ error, resetErrorBoundary }) {
     return (

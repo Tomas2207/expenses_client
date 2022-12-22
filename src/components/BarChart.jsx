@@ -15,7 +15,7 @@ const Barchart = (chartData) => {
         datasets: [
           {
             label: 'Monthly Expenses',
-            backgroundColor: 'rgba(70, 102, 255, 1)',
+            backgroundColor: '#900d09',
             data: chartData.data.map((data) => data.amount),
           },
         ],
