@@ -2,24 +2,20 @@ import React, { useState } from 'react';
 import { useEffect } from 'react';
 import { currencies, options } from '../utils/data';
 
-const NewExpense = (props) => {
-  const { getExpenses, setShowForm, getYear, getChartData, getPieData } = props;
+const NewIncome = (props) => {
+  const { getIncomes, setShowForm, getYear, getChartData } = props;
   const initalValues = {
-    category: 'default',
     amount: '',
     date: new Date().toISOString().split('T')[0],
   };
   const [formValues, setFormValues] = useState(initalValues);
   const [formErrors, setFormErrors] = useState();
   const [isSubmit, setIsSubmit] = useState(false);
-  const [currentCurrency, setCurrentCurrency] = useState(['$', ['USD']]);
+  const [currentCurrency, setCurrentCurrency] = useState(['$', 'USD']);
   const [convertionResult, setConvertionResult] = useState();
 
   const validate = (values) => {
     const errors = {};
-    if (values.category === 'default') {
-      errors.category = 'Set a valid category';
-    }
     if (!values.amount) {
       errors.amount = 'Set a valid amount';
     }
@@ -65,27 +61,25 @@ const NewExpense = (props) => {
   }, [isSubmit]);
 
   useEffect(() => {
-    getExpenses();
+    getIncomes();
   }, []);
 
   const makeRequest = () => {
     console.log(formErrors);
     if (Object.keys(formErrors).length === 0) {
       const body = {
-        expense_category: formValues.category,
-        expense_amount: convertionResult,
-        expense_date: formValues.date.split('T')[0],
+        income_amount: convertionResult,
+        income_date: formValues.date.split('T')[0],
       };
       console.log(body);
-      fetch('http://localhost:5000/expenses', {
+      fetch('http://localhost:5000/income', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(body),
       }).then((data) => {
-        getExpenses();
-        getYear();
+        getIncomes();
         getChartData();
-        getPieData();
+        getYear();
         setShowForm(false);
       });
     }
@@ -102,33 +96,16 @@ const NewExpense = (props) => {
   }, [convertionResult]);
 
   return (
-    <div className="w-[25rem] flex items-center justify-center text-white bg-pink-400 to-neonPink p-2 rounded-lg mx-auto">
+    <div className="w-[25rem] flex items-center justify-center text-white to-neonPink p-2 rounded-lg mx-auto">
       <form
         action=""
         className="flex gap-4 flex-col justify-between w-full"
         onSubmit={handleSubmit}
       >
-        <h2 className="text-2xl text-bg font-bold text-center">New Expense</h2>
+        <h2 className="text-2xl text-bg font-bold text-center text-white">
+          New Income
+        </h2>
         <div className="flex flex-col gap-2 items-center">
-          <label htmlFor="category" className="font-normal">
-            Category
-          </label>
-
-          <select
-            name="category"
-            id=""
-            className=" text-sm rounded-lg block w-full p-2.5 bg-bg border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
-            outline-none"
-            value={formValues.category}
-            onChange={handleChange}
-          >
-            <option value="default">--select category--</option>
-            {options.map((option) => (
-              <option className="flex items-center" value={option}>
-                {option}
-              </option>
-            ))}
-          </select>
           <div className="text-bg font-normal">
             {formErrors ? formErrors.category : null}
           </div>
@@ -142,8 +119,7 @@ const NewExpense = (props) => {
               <select
                 name="currency"
                 id=""
-                className=" w-full text-sm rounded-lg block w-full p-2.5 bg-bg border-gray-600 placeholder-gray-400 text-white focus:ring-blue-500 focus:border-blue-500
-                  outline-none"
+                className=" w-full text-sm rounded-lg block w-full p-2.5 bg-bg border-gray-600 placeholder-gray-400 text-white outline-none"
                 value={formValues.currency}
                 onChange={handleCurrencyChange}
               >
@@ -159,7 +135,7 @@ const NewExpense = (props) => {
               type="tel"
               name="amount"
               placeholder="Amount"
-              className="bg-bg outline-none w-[90%] "
+              className="bg-bg outline-none w-[90%] rounded-md ml-1 px-1"
               value={formValues.amount}
               onChange={handleChange}
             />
@@ -175,7 +151,7 @@ const NewExpense = (props) => {
         <input
           type="date"
           name="date"
-          className="bg-bg outline-none w-full"
+          className="bg-bg outline-none w-full text-center h-10 rounded-md px-32"
           value={formValues.date}
           onChange={handleChange}
         />
@@ -188,4 +164,4 @@ const NewExpense = (props) => {
   );
 };
 
-export default NewExpense;
+export default NewIncome;

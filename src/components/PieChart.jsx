@@ -5,20 +5,23 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { useEffect } from 'react';
 import { monthNames } from '../utils/data';
 
-const PieChart = (pieData) => {
+const PieChart = (props) => {
   const [data, setData] = useState({ datasets: [] });
+  console.log(props);
   useEffect(() => {
-    if (pieData)
+    if (props.data)
       setData({
-        labels: pieData.data.map((data) => data.expense_category),
+        labels: props.data.map((data) => data.expense_category),
         datasets: [
           {
             label: 'Monthly Expenses',
-            data: pieData.data.map((data) => data.amount),
+            data: props.data.map((data) =>
+              (data.amount * props.rate).toFixed(2)
+            ),
           },
         ],
       });
-  }, [pieData]);
+  }, [props.data, props.rate]);
 
   return <Pie data={data} />;
 };

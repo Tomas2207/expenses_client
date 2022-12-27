@@ -5,22 +5,34 @@ import { Chart as ChartJS } from 'chart.js/auto';
 import { useEffect } from 'react';
 import { monthNames } from '../utils/data';
 
-const Barchart = (chartData) => {
+const Barchart = (props) => {
   const [data, setData] = useState({ datasets: [] });
 
   useEffect(() => {
-    if (chartData)
+    console.log(props.data);
+    if (props.data)
       setData({
-        labels: chartData.data.map((data) => monthNames[data.date_part - 1]),
+        labels: props.data.map((data) => monthNames[data.date_part - 1]),
         datasets: [
           {
             label: 'Monthly Expenses',
-            backgroundColor: '#900d09',
-            data: chartData.data.map((data) => data.amount),
+            backgroundColor: '#4666FF',
+            borderColor: '#4666FF',
+            data: props.data.map((data) =>
+              (data.amount * props.rate).toFixed(2)
+            ),
+          },
+          {
+            label: 'Income',
+            backgroundColor: '#f472b6',
+            borderColor: '#f472b6',
+            data: props.incomeData.map((data) =>
+              (data.income * props.rate).toFixed(2)
+            ),
           },
         ],
       });
-  }, [chartData]);
+  }, [props]);
 
   return <Bar data={data} />;
 };

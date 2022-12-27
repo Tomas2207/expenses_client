@@ -13,8 +13,11 @@ module.exports = {
       },
       colors: {
         bg: '#222222',
-        // neonPurple: '#4666FF',
-        neonPurple: '#900d09',
+        neonPurple: '#4666FF',
+        skyBlue: '#00BCD4',
+        neonPink: '#EE82EE',
+
+        // neonPurple: '#900d09',
       },
     },
   },

@@ -3,15 +3,24 @@ import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Transactions from './components/Transactions';
 import { ErrorBoundary } from 'react-error-boundary';
+import welcome from './assets/welcome_img.png';
 
 const App = () => {
+  console.log(process.env.REACT_APP_CURRENCY_API);
   const [expenses, setExpenses] = useState();
   const [years, setYears] = useState();
+  const [incomes, setIncomes] = useState();
 
   const getExpenses = async () => {
     const response = await fetch(`http://localhost:5000/expenses`);
     const data = await response.json();
+    console.log(data);
     if (!data.message) setExpenses(data);
+  };
+  const getIncomes = async () => {
+    const response = await fetch(`http://localhost:5000/income`);
+    const data = await response.json();
+    if (!data.message) setIncomes(data);
   };
 
   const getYear = async () => {
@@ -23,6 +32,7 @@ const App = () => {
   useEffect(() => {
     getExpenses();
     getYear();
+    getIncomes();
   }, []);
 
   function ErrorFallback({ error, resetErrorBoundary }) {
@@ -38,13 +48,16 @@ const App = () => {
   return (
     <div>
       <Navbar />
-      <h1 className="text-white text-2xl px-2 py-4">Good Morning, Tomas</h1>
+      
+
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
         <Transactions
           getExpenses={getExpenses}
           expenses={expenses}
           years={years}
           getYear={getYear}
+          incomes={incomes}
+          getIncomes={getIncomes}
         />
       </ErrorBoundary>
     </div>
