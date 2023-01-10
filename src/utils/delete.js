@@ -1,4 +1,4 @@
-const deleteExpense = async (expense, user, callback) => {
+export const deleteExpense = async (expense, user, callback) => {
   try {
     const body = {
       expense_id: expense,
@@ -18,7 +18,7 @@ const deleteExpense = async (expense, user, callback) => {
   }
 };
 
-const deleteIncome = async (income, user, callback) => {
+export const deleteIncome = async (income, user, callback) => {
   const body = {
     income_id: income,
   };
@@ -33,5 +33,3 @@ const deleteIncome = async (income, user, callback) => {
   const data = await response.json();
   callback();
 };
-
-module.exports = { deleteExpense, deleteIncome };
