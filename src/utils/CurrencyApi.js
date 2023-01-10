@@ -7,7 +7,7 @@ var requestOptions = {
   headers: myHeaders,
 };
 
-const GetCurrencyChange = async (currentCurrency) => {
+export const GetCurrencyChange = async (currentCurrency) => {
   const response = await fetch(
     `https://api.apilayer.com/exchangerates_data/convert?to=${currentCurrency[1]}&from=USD&amount=1`,
     requestOptions
@@ -16,5 +16,3 @@ const GetCurrencyChange = async (currentCurrency) => {
 
   return data;
 };
-
-module.exports = { GetCurrencyChange };
