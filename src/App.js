@@ -1,39 +1,64 @@
+import { ValuesContext } from './utils/Context';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
 import Navbar from './components/Navbar';
 import Transactions from './components/Transactions';
 import { ErrorBoundary } from 'react-error-boundary';
-import welcome from './assets/welcome_img.png';
+import WelcomeBanner from './components/WelcomeBanner';
+import { useNavigate } from 'react-router-dom';
 
-const App = () => {
-  console.log(process.env.REACT_APP_CURRENCY_API);
+const App = ({ isAuth, getUser, ...props }) => {
   const [expenses, setExpenses] = useState();
   const [years, setYears] = useState();
   const [incomes, setIncomes] = useState();
+  const [currentUser, setCurrentUser] = useState();
+  const navigate = useNavigate();
+  const { currentCurrency, setCurrentCurrency, rate, setRate, setIsAuth } =
+    props;
 
   const getExpenses = async () => {
-    const response = await fetch(`http://localhost:5000/expenses`);
+    const response = await fetch(
+      `${process.env.REACT_APP_ORIGIN_URL}/expenses/expense/${currentUser.user_id}`
+    );
     const data = await response.json();
-    console.log(data);
+
     if (!data.message) setExpenses(data);
+    else setExpenses('');
   };
   const getIncomes = async () => {
-    const response = await fetch(`http://localhost:5000/income`);
+    const response = await fetch(
+      `${process.env.REACT_APP_ORIGIN_URL}/income/${currentUser.user_id}`
+    );
     const data = await response.json();
     if (!data.message) setIncomes(data);
+    else setIncomes('');
   };
 
   const getYear = async () => {
-    const response = await fetch(`http://localhost:5000/expenses/years`);
+    const response = await fetch(
+      `${process.env.REACT_APP_ORIGIN_URL}/expenses/years/${currentUser.user_id}`
+    );
     const data = await response.json();
     if (!data.message) setYears(data);
   };
 
   useEffect(() => {
-    getExpenses();
-    getYear();
-    getIncomes();
+    if (!isAuth) navigate('/');
+  }, [isAuth]);
+
+  useEffect(() => {
+    getUser().then((data) => {
+      setCurrentUser(data);
+    });
   }, []);
+
+  useEffect(() => {
+    if (currentUser) {
+      getExpenses();
+      getYear();
+      getIncomes();
+    }
+  }, [currentUser]);
 
   function ErrorFallback({ error, resetErrorBoundary }) {
     return (
@@ -47,18 +72,34 @@ const App = () => {
 
   return (
     <div>
-      <Navbar />
-      
+      <Navbar setIsAuth={setIsAuth} />
 
+      <WelcomeBanner
+        expenses={expenses}
+        incomes={incomes}
+        currentCurrency={currentCurrency}
+        rate={rate}
+        getUser={getUser}
+      />
       <ErrorBoundary FallbackComponent={ErrorFallback} onReset={() => {}}>
-        <Transactions
-          getExpenses={getExpenses}
-          expenses={expenses}
-          years={years}
-          getYear={getYear}
-          incomes={incomes}
-          getIncomes={getIncomes}
-        />
+        <ValuesContext.Provider
+          value={{
+            getExpenses,
+            expenses,
+            years,
+            getYear,
+            incomes,
+            getIncomes,
+            getUser,
+          }}
+        >
+          <Transactions
+            currentCurrency={currentCurrency}
+            setCurrentCurrency={setCurrentCurrency}
+            rate={rate}
+            setRate={setRate}
+          />
+        </ValuesContext.Provider>
       </ErrorBoundary>
     </div>
   );

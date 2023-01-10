@@ -7,7 +7,6 @@ import { monthNames } from '../utils/data';
 
 const PieChart = (props) => {
   const [data, setData] = useState({ datasets: [] });
-  console.log(props);
   useEffect(() => {
     if (props.data)
       setData({
@@ -23,7 +22,20 @@ const PieChart = (props) => {
       });
   }, [props.data, props.rate]);
 
-  return <Pie data={data} />;
+  return (
+    <Pie
+      data={data}
+      options={{
+        plugins: {
+          legend: {
+            labels: {
+              color: 'white',
+            },
+          },
+        },
+      }}
+    />
+  );
 };
 
 export default PieChart;

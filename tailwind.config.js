@@ -12,10 +12,10 @@ module.exports = {
         xl2: '1550px',
       },
       colors: {
-        bg: '#222222',
-        neonPurple: '#4666FF',
-        skyBlue: '#00BCD4',
-        neonPink: '#EE82EE',
+        bg: '#29292C',
+        body: '#111219',
+        neon1: '#92fe9d',
+        neon2: '#00c9ff',
 
         // neonPurple: '#900d09',
       },

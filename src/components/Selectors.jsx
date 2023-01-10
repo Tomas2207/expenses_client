@@ -1,14 +1,12 @@
 import React from 'react';
+import { useContext } from 'react';
+import { ValuesContext } from '../utils/Context';
 import { currencies, monthNames } from '../utils/data';
 
-const Selectors = ({
-  years,
-  formValues,
-  handleChange,
-  handleCurrencyChange,
-}) => {
+const Selectors = ({ formValues, handleChange, handleCurrencyChange }) => {
+  const { years } = useContext(ValuesContext);
   return (
-    <div className="flex gap-2 mb-5">
+    <div className="flex flex-col sm:flex-row gap-2 w-full self-start">
       {years ? (
         <select
           name="year"
@@ -34,7 +32,9 @@ const Selectors = ({
         onChange={handleChange}
       >
         {monthNames.map((month, i) => (
-          <option value={i}>{month}</option>
+          <option key={i} value={i}>
+            {month}
+          </option>
         ))}
       </select>
 
@@ -46,8 +46,8 @@ const Selectors = ({
         value={formValues.currency}
         onChange={handleCurrencyChange}
       >
-        {currencies.map((currency) => (
-          <option value={currency[0] + '-' + currency[1]}>
+        {currencies.map((currency, i) => (
+          <option key={i} value={currency[0] + '-' + currency[1]}>
             {currency[0] + currency[1]}
           </option>
         ))}

@@ -9,20 +9,17 @@ const Budget = (props) => {
   const [budget, setBudget] = useState(0);
   const [amount, setAmount] = useState(0);
   const [finalBudget, setFinalBudget] = useState(0);
-  // const firstMonth = props.chartData[0].date_part;
-  // const lastMonth = props.chartData[props.chartData.length - 1].date_part;
 
   const getYearExpenses = async (year) => {
-    console.log('called');
     const response = await fetch(
-      `http://localhost:5000/expenses/chart?year=${year}`
+      `${process.env.REACT_APP_ORIGIN_URL}/expenses/chart?year=${year}`
     );
     const data = await response.json();
     return data;
   };
 
   const getIncome = async () => {
-    const response = await fetch('http://localhost:5000/income');
+    const response = await fetch(`${process.env.REACT_APP_ORIGIN_URL}/income`);
     const data = await response.json();
     setIncome(data[0].income_amount);
   };
@@ -32,7 +29,6 @@ const Budget = (props) => {
     setAmount(0);
     props.years.forEach((year) => {
       getYearExpenses(year.date_part).then((data) => {
-        console.log(year.date_part);
         data.forEach((value) => {
           setAmount((prev) => prev + parseFloat(value.amount));
         });
@@ -43,29 +39,14 @@ const Budget = (props) => {
               (data[data.length - 1].date_part - data[0].date_part + 1)
         );
       });
-
-      // console.log(amount);
-      console.log(budget);
     });
   };
 
   useEffect(() => {});
 
   useEffect(() => {
-    console.log('final budget', budget);
-    console.log('final amount', amount);
     if (amount > 0 && budget > 0) setFinalBudget((budget - amount).toFixed(2));
   }, [amount, budget]);
-
-  // const budgetCalc = () => {
-  //   console.log();
-  //   // let finalBudget = monthlyIncome * props.chartData.length;
-  //   let finalBudget = monthlyIncome * (lastMonth - firstMonth + 1);
-  //   props.chartData.forEach((month) => {
-  //     finalBudget = finalBudget - month.amount;
-  //   });
-  //   setBudget(finalBudget.toFixed(2));
-  // };
 
   useEffect(() => {
     if ((budget === 0) & (amount === 0)) {
@@ -81,12 +62,10 @@ const Budget = (props) => {
   useEffect(() => {
     if (monthlyIncome) {
       reset();
-      // budgetCalc();
     }
   }, [monthlyIncome]);
 
   useEffect(() => {
-    // budgetCalc();
     reset();
   }, [props]);
 
@@ -94,7 +73,7 @@ const Budget = (props) => {
     const body = {
       income_amount: incomeInput,
     };
-    fetch(`http://localhost:5000/income`, {
+    fetch(`${process.env.REACT_APP_ORIGIN_URL}/income`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(body),
@@ -112,7 +91,6 @@ const Budget = (props) => {
 
   useEffect(() => {
     getIncome();
-    console.log('render');
   }, []);
 
   return (
