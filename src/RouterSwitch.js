@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Route, Routes} from 'react-router-dom';
 import App from './App';
-import Footer from './components/Footer';
 import Landing from './components/landingPage/Landing';
 import LogIn from './components/LogIn';
 

@@ -44,8 +44,10 @@ const Register = ({ setRegister, setIsAuth }) => {
           }
         );
         const data = await response.json();
-        localStorage.setItem('token', data.token);
-        setIsAuth(true);
+        if (data.token) {
+          localStorage.setItem('token', data.token);
+          setIsAuth(true);
+        }
       } catch (error) {
         console.error(error.message);
       }

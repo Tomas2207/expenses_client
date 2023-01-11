@@ -13,6 +13,7 @@ const LogIn = ({ isAuth, setIsAuth }) => {
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
+    setError('');
   };
 
   const handleSubmit = async (e) => {
@@ -31,6 +32,7 @@ const LogIn = ({ isAuth, setIsAuth }) => {
       const data = await response.json();
 
       if (data.token) {
+        console.log('token', data.token);
         localStorage.setItem('token', data.token);
         setIsAuth(true);
       } else {
