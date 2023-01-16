@@ -14,15 +14,9 @@ const Navbar = ({ setIsAuth }) => {
       </div>
       <nav>
         <ul className="text-white flex gap-5">
-          {/* <li className="hover:border-b border-b-neon2 cursor-pointer ease-in-out duration-75">
-            Dashboard
-          </li>
-          <li className="hover:border-b border-b-neon2 cursor-pointer ease-in-out duration-75">
-            Account
-          </li> */}
           <li
             onClick={logOut}
-            className="hover:border-b border-b-neon2 cursor-pointer ease-in-out duration-75"
+            className="hover:border-b border-b-neon2 cursor-pointer ease-in-out duration-75 text-xl"
           >
             Log Out
           </li>

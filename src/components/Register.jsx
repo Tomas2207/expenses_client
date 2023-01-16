@@ -4,6 +4,7 @@ const Register = ({ setRegister, setIsAuth }) => {
   const initialValues = { name: '', email: '', password: '' };
   const [formValues, setFormValues] = useState(initialValues);
   const [formErrors, setFormErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -26,6 +27,7 @@ const Register = ({ setRegister, setIsAuth }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     setFormErrors(validate(formValues));
     makeRequest();
   };
@@ -52,6 +54,7 @@ const Register = ({ setRegister, setIsAuth }) => {
         console.error(error.message);
       }
     }
+    setLoading(false);
   };
 
   return (
@@ -91,8 +94,11 @@ const Register = ({ setRegister, setIsAuth }) => {
         {formErrors ? (
           <div className="text-red-600">{formErrors.password}</div>
         ) : null}
-        <button className="bg-neon2 text-bg rounded-md h-8 hover:bg-bg hover:text-white">
-          Submit
+        <button
+          disabled={loading}
+          className="bg-neon2 text-bg rounded-md h-8 hover:bg-bg hover:text-white"
+        >
+          {loading ? 'Loading...' : 'Submit'}
         </button>
       </form>
       <div className="flex justify-center gap-2">

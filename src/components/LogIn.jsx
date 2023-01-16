@@ -10,6 +10,7 @@ const LogIn = ({ isAuth, setIsAuth }) => {
   const [formValues, setFormValues] = useState(initialValues);
   const [error, setError] = useState('');
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) => {
     setFormValues({ ...formValues, [e.target.name]: e.target.value });
@@ -18,6 +19,7 @@ const LogIn = ({ isAuth, setIsAuth }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const { email, password } = formValues;
     const body = { email, password };
     try {
@@ -42,6 +44,7 @@ const LogIn = ({ isAuth, setIsAuth }) => {
     } catch (error) {
       console.error(error.message);
     }
+    setLoading(false);
   };
 
   useEffect(() => {
@@ -78,8 +81,11 @@ const LogIn = ({ isAuth, setIsAuth }) => {
               placeholder="password"
               className="rounded-md h-8 px-2"
             />
-            <button className="bg-neon2 text-bg rounded-md h-8 hover:bg-bg hover:text-white">
-              Submit
+            <button
+              disabled={loading}
+              className="bg-neon2 text-bg rounded-md h-8 hover:bg-bg hover:text-white"
+            >
+              {loading ? 'Loading...' : 'Submit'}
             </button>
           </form>
           <div className="flex justify-center gap-2">

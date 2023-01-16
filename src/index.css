@@ -29,7 +29,7 @@ input {
 }
 
 .filter {
-  filter: drop-shadow(5px 3px 10px #00c9ff);
+  filter: drop-shadow(5px 3px 100px #00c9ff);
 }
 
 /* width */

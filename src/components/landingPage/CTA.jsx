@@ -2,7 +2,7 @@ import React from 'react';
 
 const CTA = () => {
   return (
-    <div className="bg-neon2 px-2 md:p-4 self-center md:2/3 lg:w-1/2 rounded-md h-[15rem] flex flex-col items-center justify-center text-center">
+    <div className="bg-neon2 px-2 md:p-4 self-center md:2/3 lg:w-1/2 rounded-md h-[15rem] flex flex-col items-center justify-center text-center my-12">
       <h2 className="font-bold text-2xl sm:text-3xl md:text-4xl">
         Start using Expense Manager!
       </h2>

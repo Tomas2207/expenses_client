@@ -3,7 +3,7 @@ import hero from '../../assets/hero.svg';
 
 const Hero = () => {
   return (
-    <div className="flex gap-5 lg:gap-0 flex-col lg:flex-row items-center justify-center my-10 h-[50rem]">
+    <div className="flex gap-5 lg:gap-0 flex-col lg:flex-row items-center justify-center my-10 h-[50rem] via-neon2 to-bg">
       <div className="w-full text-white">
         <h1 className="text-5xl lg:text-7xl font-bold w-full">
           Expense Manager
